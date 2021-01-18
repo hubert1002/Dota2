@@ -4,10 +4,11 @@ import com.deadgame.dota2.data.Hero
 import com.deadgame.dota2.data.Item
 import com.deadgame.dota2.data.Result
 import com.deadgame.dota2.data.source.DotaDataSource
-import rx.Observer
 import timber.log.Timber
 import java.lang.Exception
 import java.util.*
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 /**
  * Created by liuwei04 on 2021/1/8.
@@ -21,10 +22,20 @@ object RemoteDataSource : DotaDataSource {
 
     override suspend fun getItems(): Result<List<Item>> {
         var test= WebApi.getItems(object : Observer<NetResult<Item>?> {
-            override fun onCompleted() {}
-            override fun onError(e: Throwable) {}
-            override fun onNext(t: NetResult<Item>?) {
-                Timber.i("=$t")
+            override fun onError(e: Throwable) {
+
+            }
+
+            override fun onNext(t: NetResult<Item>) {
+                Timber.i("onNext$t")
+            }
+
+            override fun onComplete() {
+                Timber.i("onComplete")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                Timber.i("onSubscribe")
             }
         })
         var netResult= WebApi.getItemsSync()

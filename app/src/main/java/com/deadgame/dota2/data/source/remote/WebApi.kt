@@ -2,16 +2,16 @@ package com.deadgame.dota2.data.source.remote
 
 import com.deadgame.dota2.data.Item
 import com.google.gson.GsonBuilder
-import com.squareup.okhttp.OkHttpClient
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
-import retrofit.http.GET
-import retrofit.http.Query
-import rx.Observable
-import rx.Observer
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 import timber.log.Timber
 
 /**
@@ -31,7 +31,7 @@ object WebApi {
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(URL)
                 .client(OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
         apiService = retrofit.create(ApiService::class.java)
     }
@@ -41,7 +41,7 @@ object WebApi {
         apiService.getItems(KEY, LANGUAGE)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(observer)
+            ?.subscribe(observer!!)
     }
 
     fun getItemsSync():NetResult<Item>?{
