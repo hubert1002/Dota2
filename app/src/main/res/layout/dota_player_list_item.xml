@@ -19,12 +19,12 @@
     <data>
 
         <variable
-            name="hero"
-            type="com.deadgame.dota2.data.Hero" />
+            name="player"
+            type="com.deadgame.dota2.data.Player" />
 
         <variable
             name="viewmodel"
-            type="com.deadgame.dota2.module.hero.HeroesViewModel" />
+            type="com.deadgame.dota2.module.user.UserViewModel" />
     </data>
 
     <LinearLayout
@@ -33,14 +33,14 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:onClick="@{() -> viewmodel.openTask(hero)}">
+        android:onClick="@{() -> viewmodel.openTask(player.steamid)}">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:scaleType="centerCrop"
-            app:imageFromUrl="@{hero.iconForList}"
+            app:imageFromUrl="@{player.avatarfull}"
             />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="@{hero.titleForList}"
+            android:text="@{player.personaname}"
             />
     </LinearLayout>
 </layout>

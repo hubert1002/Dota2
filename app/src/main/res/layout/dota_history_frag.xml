@@ -10,7 +10,7 @@
 
         <variable
             name="viewmodel"
-            type="com.deadgame.dota2.module.hero.HeroesViewModel" />
+            type="com.deadgame.dota2.module.history.HistoryViewModel" />
 
     </data>
 
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:heroes="@{viewmodel.items}" />
+                    app:history="@{viewmodel.items}" />
             </LinearLayout>
 
             <LinearLayout

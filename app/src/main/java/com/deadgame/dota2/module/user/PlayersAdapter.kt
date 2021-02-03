@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.deadgame.dota2.module.hero
+package com.deadgame.dota2.module.user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,14 +21,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deadgame.dota2.data.Hero
+import com.deadgame.dota2.data.Player
 import com.deadgame.dota2.databinding.DotaHeroListItemBinding
-import com.deadgame.dota2.databinding.HeroesItemBinding
+import com.deadgame.dota2.databinding.DotaPlayerListItemBinding
 
 /**
  * Adapter for the task list. Has a reference to the [ViewModel] to send actions back to it.
  */
-class HeroesAdapter(private val viewModel: HeroesViewModel) :
-    ListAdapter<Hero, HeroesAdapter.ViewHolder>(TaskDiffCallback()) {
+class PlayersAdapter(private val viewModel: UserViewModel) :
+    ListAdapter<Player, PlayersAdapter.ViewHolder>(TaskDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -40,20 +41,20 @@ class HeroesAdapter(private val viewModel: HeroesViewModel) :
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(val binding: HeroesItemBinding) :
+    class ViewHolder private constructor(val binding: DotaPlayerListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: HeroesViewModel, item: Hero) {
+        fun bind(viewModel: UserViewModel, item: Player) {
 
             binding.viewmodel = viewModel
-            binding.hero = item
+            binding.player = item
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = HeroesItemBinding.inflate(layoutInflater, parent, false)
+                val binding = DotaPlayerListItemBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
@@ -67,12 +68,12 @@ class HeroesAdapter(private val viewModel: HeroesViewModel) :
  * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class TaskDiffCallback : DiffUtil.ItemCallback<Hero>() {
-    override fun areItemsTheSame(oldItem: Hero, newItem: Hero): Boolean {
-        return oldItem.id == newItem.id
+class TaskDiffCallback : DiffUtil.ItemCallback<Player>() {
+    override fun areItemsTheSame(oldItem: Player, newItem: Player): Boolean {
+        return oldItem.steamid == newItem.steamid
     }
 
-    override fun areContentsTheSame(oldItem: Hero, newItem: Hero): Boolean {
+    override fun areContentsTheSame(oldItem: Player, newItem: Player): Boolean {
         return oldItem == newItem
     }
 }

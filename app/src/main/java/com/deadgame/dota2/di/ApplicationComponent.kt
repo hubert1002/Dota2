@@ -18,6 +18,7 @@ package com.deadgame.dota2.di
 
 import android.content.Context
 import com.deadgame.dota2.DotaApplication
+import com.deadgame.dota2.module.user.UserViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -34,7 +35,9 @@ import javax.inject.Singleton
     modules = [
         ApplicationModule::class,
         AndroidSupportInjectionModule::class,
-        HeroesModule::class
+        HeroesModule::class,
+        UserModule::class,
+        HistoryModule::class
     ])
 interface ApplicationComponent : AndroidInjector<DotaApplication> {
 

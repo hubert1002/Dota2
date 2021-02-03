@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="viewmodel"
+            type="com.deadgame.dota2.module.user.UserViewModel" />
+
+    </data>
+
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:foreground="?android:selectableItemBackground"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="5dp"
+            android:background="@color/colorWhite">
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical" android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+                <ImageView
+                    android:layout_width="240px"
+                    android:layout_height="240px"
+                    android:background="@drawable/default_avater"
+                    app:imageFromUrl="@{viewmodel.player.avatarfull}"
+                    android:id="@+id/iv_user_avater"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_user_state"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="8pt"
+                    android:layout_above="@+id/tv_last_logoff"
+                    android:layout_alignLeft="@+id/tv_last_logoff"
+                    android:layout_alignStart="@+id/tv_last_logoff"
+                    android:text="@{viewmodel.player.stateFroShow}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_user_name"
+                    android:text="@{viewmodel.player.personaname}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14pt"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_alignTop="@+id/iv_user_avater"
+                    android:layout_toRightOf="@+id/iv_user_avater"
+                    android:layout_toEndOf="@+id/iv_user_avater" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_user_id"
+                    android:textSize="8pt"
+                    android:textColor="@color/colorBlack"
+                    android:text="@{viewmodel.player.steamidFroShow}"
+                    android:layout_below="@+id/iv_user_avater"
+                    android:layout_alignLeft="@+id/iv_user_avater"
+                    android:layout_alignStart="@+id/iv_user_avater"
+                    android:layout_marginTop="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_last_logoff"
+                    android:text="@{viewmodel.player.lastLoginTime}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="8pt"
+                    android:layout_alignBottom="@+id/iv_user_avater"
+                    android:layout_alignLeft="@+id/tv_user_name"
+                    android:layout_alignStart="@+id/tv_user_name" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_steam_url"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="10pt"
+                    android:text="@{viewmodel.player.profileurl}"
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@+id/tv_user_id"
+                    android:layout_alignLeft="@+id/tv_user_id"
+                    android:layout_alignStart="@+id/tv_user_id" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_friends_list"
+            android:clipToPadding="false"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:players="@{viewmodel.friends}"/>
+    </LinearLayout>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loadingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</FrameLayout>
+
+</layout>

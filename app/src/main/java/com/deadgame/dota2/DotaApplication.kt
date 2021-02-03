@@ -16,6 +16,8 @@
 
 package com.deadgame.dota2
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.work.ListenableWorker
@@ -25,6 +27,7 @@ import com.deadgame.dota2.data.Hero
 import com.deadgame.dota2.data.source.DotaRepository
 import com.deadgame.dota2.di.DaggerApplicationComponent
 import com.deadgame.dota2.util.HEROES_DATA_FILENAME
+import com.deadgame.dota2.util.SPUtil
 import com.deadgame.dota2.workers.SeedDatabaseWorker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -52,6 +55,8 @@ open class DotaApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        BaseContextWrapper.setContext(this)
+
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
         CoroutineScope(Dispatchers.IO).launch {
             insertDB()
@@ -79,5 +84,13 @@ open class DotaApplication : DaggerApplication() {
         }
     }
 
-
+    object BaseContextWrapper{
+        private lateinit var context: Context
+        fun setContext( c: Context ){
+            context = c
+        }
+        fun getContext():Context{
+            return context
+        }
+    }
 }

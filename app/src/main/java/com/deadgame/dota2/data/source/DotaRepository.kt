@@ -16,9 +16,7 @@
 
 package com.deadgame.dota2.data.source
 
-import com.deadgame.dota2.data.Hero
-import com.deadgame.dota2.data.Item
-import com.deadgame.dota2.data.Result
+import com.deadgame.dota2.data.*
 
 
 /**
@@ -26,6 +24,13 @@ import com.deadgame.dota2.data.Result
  */
 interface DotaRepository {
     suspend fun getHeroes(): Result<List<Hero>>
+
     suspend fun getItems(): Result<List<Item>>
     suspend fun saveHeroes(items:List<Hero>)
+    suspend fun getPlayersInfo(ids:List<String>):Result<List<Player>>
+    suspend fun getFriendsList(id: String): Result<List<Player>>
+    fun getCurrentPlayerId():String?
+    suspend fun getMatchesHistory(id: String,num:String): Result<List<MatchBriefInfo>>
+    suspend fun getMatchDetails(id: String): Result<MatchDetailInfo>
+    suspend fun getMatchesHistoryForShow(id: String,num:String): Result<List<MatchDetailInfo>>
 }

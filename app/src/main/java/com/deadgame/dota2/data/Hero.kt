@@ -44,7 +44,10 @@ data class Hero @JvmOverloads constructor(
         get() = if (localized_name.isNotEmpty()) localized_name else name
 
     val iconForList:String
-        get() = url_small_portrait
+        get() = url_vertical_portrait
+
+    val iconForHistory:String
+        get() = url_full_portrait
 
     val type:HeroesFilter
         get() =  HeroesFilter.ALL

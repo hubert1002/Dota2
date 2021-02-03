@@ -14,6 +14,9 @@ interface LocalDataDao {
     @Query("SELECT * FROM Heroes")
     suspend fun getHeroes(): List<Hero>
 
+    @Query("SELECT * FROM Heroes WHERE id IN (:ids)")
+    suspend fun getHeroes(ids:List<Int>): List<Hero>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(items: List<Hero>)
 }

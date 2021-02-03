@@ -17,8 +17,8 @@ class HeroesViewModel @Inject constructor(
     private val repository:DotaRepository
 ) : ViewModel()  {
 
-    private val _openTaskEvent = MutableLiveData<Event<String>>()
-    val openTaskEvent: LiveData<Event<String>> = _openTaskEvent
+    private val _openTaskEvent = MutableLiveData<Event<Hero>>()
+    val openTaskEvent: LiveData<Event<Hero>> = _openTaskEvent
 
     private val _items = MutableLiveData<List<Hero>>().apply { value = emptyList() }
     val items: LiveData<List<Hero>> = _items
@@ -68,13 +68,13 @@ class HeroesViewModel @Inject constructor(
     /**
      * Called by Data Binding.
      */
-    fun openTask(taskId: String) {
+    fun openTask(taskId: Hero) {
         _openTaskEvent.value = Event(taskId)
 
-        viewModelScope.launch {
-            val result = repository.getItems()
-            Timber.i("test$result")
-        }
+//        viewModelScope.launch {
+//            val result = repository.getItems()
+//            Timber.i("test$result")
+//        }
     }
 
 

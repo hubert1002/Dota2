@@ -1,4 +1,4 @@
-package com.deadgame.dota2.module.hero
+package com.deadgame.dota2.module.history
 
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.deadgame.dota2.R
 import com.deadgame.dota2.databinding.DotaHerosFragBinding
+import com.deadgame.dota2.databinding.DotaHistoryFragBinding
 import com.deadgame.dota2.util.EventObserver
 import com.deadgame.dota2.util.SGDecoration
 import dagger.android.support.DaggerFragment
@@ -20,22 +21,20 @@ import javax.inject.Inject
 /**
  * Created by liuwei04 on 2021/1/8.
  */
-class HeroesFragment : DaggerFragment(){
-
-
+class HistoryFragment : DaggerFragment(){
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<HeroesViewModel> { viewModelFactory }
+    private val viewModel by viewModels<HistoryViewModel> { viewModelFactory }
 
-    private lateinit var viewDataBinding: DotaHerosFragBinding
-    private lateinit var listAdapter: HeroesAdapter
+    private var initId:String?= null
+    private lateinit var viewDataBinding: DotaHistoryFragBinding
+    private lateinit var listAdapter: HistoryAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        viewDataBinding = DotaHerosFragBinding.inflate(inflater, container, false).apply {
+        viewDataBinding = DotaHistoryFragBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
@@ -49,17 +48,17 @@ class HeroesFragment : DaggerFragment(){
         setupListAdapter()
         setupNavigation()
 
-        viewModel.loadHeroes()
+        viewModel.getHistoryList(initId)
 
     }
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            viewDataBinding.tasksList.layoutManager= StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            viewDataBinding.tasksList.addItemDecoration(SGDecoration(requireContext().resources.getDimensionPixelOffset(
-                R.dimen.hero_dec)))
-            listAdapter = HeroesAdapter(viewModel)
+//            viewDataBinding.tasksList.layoutManager= StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//            viewDataBinding.tasksList.addItemDecoration(SGDecoration(requireContext().resources.getDimensionPixelOffset(
+//                R.dimen.hero_dec)))
+            listAdapter = HistoryAdapter(viewModel)
             viewDataBinding.tasksList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
@@ -70,12 +69,8 @@ class HeroesFragment : DaggerFragment(){
         viewModel.openTaskEvent.observe(this.viewLifecycleOwner, EventObserver {
             Timber.i("onitemclick"+it)
 
-            val intent = Intent()
-            intent.action = "android.intent.action.VIEW"
-            var aaa = "https://www.dota2.com.cn/hero/"+it.localized_name
-            val content_url = Uri.parse(aaa)
-            intent.data = content_url
-            startActivity(intent)
+
+
         })
     }
 }
