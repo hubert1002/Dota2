@@ -17,6 +17,7 @@ package com.deadgame.dota2.data.source
 
 import com.deadgame.dota2.data.*
 import com.deadgame.dota2.data.source.remote.NetErrorException
+import com.deadgame.dota2.data.source.remote.OpenDotaWebApi
 import com.deadgame.dota2.data.source.remote.WebApi
 import com.deadgame.dota2.di.ApplicationModule
 import com.deadgame.dota2.util.Util
@@ -158,6 +159,20 @@ class DefaultDotaRepository @Inject constructor(
             return Result.Error(NetErrorException("getMatchesHistoryForShow no data"))
         }
 
+    }
+
+
+    override suspend fun getMatchInfo(id: String) = withContext(ioDispatcher){
+        return@withContext getMatchInfoImp(id)
+    }
+
+    suspend fun getMatchInfoImp(id: String): Result<MatchInfo>{
+        var info =  OpenDotaWebApi.getMatchInfo(id)
+        if(info!=null){
+            return Result.Success(info)
+        }else{
+            return Result.Error(NetErrorException("getMatchesHistoryForShow no data"))
+        }
     }
 
 

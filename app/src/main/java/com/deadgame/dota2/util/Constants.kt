@@ -21,3 +21,5 @@ package com.deadgame.dota2.util
  */
 const val DATABASE_NAME = "Dota.db"
 const val HEROES_DATA_FILENAME = "heroes.json"
+const val ABILITY_DATA_FILENAME = "ability_ids.json"
+const val ITEM_DATA_FILENAME = "item_ids.json"

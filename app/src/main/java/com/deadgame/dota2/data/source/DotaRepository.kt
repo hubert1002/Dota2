@@ -33,4 +33,5 @@ interface DotaRepository {
     suspend fun getMatchesHistory(id: String,num:String): Result<List<MatchBriefInfo>>
     suspend fun getMatchDetails(id: String): Result<MatchDetailInfo>
     suspend fun getMatchesHistoryForShow(id: String,num:String): Result<List<MatchDetailInfo>>
+    suspend fun getMatchInfo(id: String): Result<MatchInfo>
 }

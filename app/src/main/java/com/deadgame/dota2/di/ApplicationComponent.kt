@@ -37,6 +37,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         HeroesModule::class,
         UserModule::class,
+        MatchModule::class,
         HistoryModule::class
     ])
 interface ApplicationComponent : AndroidInjector<DotaApplication> {

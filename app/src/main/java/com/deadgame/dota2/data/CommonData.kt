@@ -1,6 +1,18 @@
 package com.deadgame.dota2.data
 
 import android.text.format.DateUtils
+import androidx.work.ListenableWorker
+import com.deadgame.dota2.DotaApplication
+import com.deadgame.dota2.util.ABILITY_DATA_FILENAME
+import com.deadgame.dota2.util.HEROES_DATA_FILENAME
+import com.deadgame.dota2.util.ITEM_DATA_FILENAME
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
+import org.json.JSONObject
+import timber.log.Timber
+import java.io.BufferedReader
+import java.lang.StringBuilder
 
 /**
  * Created by liuwei04 on 2021/2/2.
@@ -21,6 +33,100 @@ object CommonData {
             "天怒法师", "亚巴顿", "上古巨神", "军团指挥官", "地精工程师", "灰烬之灵", "大地之灵", "无", "灵魂守卫", "凤凰",
             "神谕者", "寒冬飞龙", "弧光"
     )
+
+    var HEROMAP = HashMap<Int,Hero>()
+    var ItemMAP = HashMap<Int,String>()
+    var AbilityMAP = HashMap<Int,String>()
+
+    private fun initHeroMap(){
+        try {
+            DotaApplication.BaseContextWrapper.getContext().assets.open(HEROES_DATA_FILENAME).use { inputStream ->
+                JsonReader(inputStream.reader()).use { jsonReader ->
+                    val plantType = object : TypeToken<List<Hero>>() {}.type
+                    val list: List<Hero> = Gson().fromJson(jsonReader, plantType)
+                    for (item in list){
+                        HEROMAP.put(item.id.toInt(),item)
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            Timber.i("doWork"+ex)
+        }
+    }
+    private fun initItemMap(){
+        try {
+            var content=StringBuilder()
+            DotaApplication.BaseContextWrapper.getContext().assets.open(ITEM_DATA_FILENAME).use { inputStream ->
+                BufferedReader(inputStream.reader()).use { bufferedReader ->
+                    var line :String
+                    while (true){
+                       line = bufferedReader.readLine()?:break
+                        content.append(line)
+                    }
+                }
+            }
+            var json = JSONObject(content.toString())
+            json.keys().forEach {
+                ItemMAP.put(it.toInt(), json.get(it).toString())
+            }
+        } catch (ex: Exception) {
+            Timber.i("doWork"+ex)
+        }
+    }
+
+    private fun initAbilityMap(){
+        try {
+            var content=StringBuilder()
+            DotaApplication.BaseContextWrapper.getContext().assets.open(ABILITY_DATA_FILENAME).use { inputStream ->
+                BufferedReader(inputStream.reader()).use { bufferedReader ->
+                    var line :String
+                    while (true){
+                        line = bufferedReader.readLine()?:break
+                        content.append(line)
+                    }
+                }
+            }
+            var json = JSONObject(content.toString())
+            json.keys().forEach {
+                AbilityMAP.put(it.toInt(), json.get(it).toString())
+            }
+        } catch (ex: Exception) {
+            Timber.i("doWork"+ex)
+        }
+    }
+
+    fun getHeroIconUrl(id:Int):String{
+        if(HEROMAP.size==0){
+            initHeroMap()
+        }
+        var hero = HEROMAP[id]
+        return hero?.iconForHistory ?: "null"
+    }
+
+
+    fun getItemIconUrl(id:Int):String{
+        if(ItemMAP.size==0){
+            initItemMap()
+        }
+        var itemName = ItemMAP[id]
+        return if(itemName!=null){
+            "https://api.opendota.com/apps/dota2/images/items/"+itemName+"_lg.png"
+        }else{
+            "null"
+        }
+    }
+    fun getAbilityIconUrl(id:Int):String{
+        if(AbilityMAP.size==0){
+            initAbilityMap()
+        }
+        var abilityName = AbilityMAP[id]
+        return if(abilityName!=null){
+            "https://api.opendota.com/apps/dota2/images/abilities/"+abilityName+"_md.png"
+        }else{
+            "null"
+        }
+    }
+
 
     fun isRadiantFromSlot(slot: Int): Boolean {
         return slot < 5

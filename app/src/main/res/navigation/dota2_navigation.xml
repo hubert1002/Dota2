@@ -22,6 +22,10 @@
             android:id="@+id/action_homeFragment_to_userFragment"
             app:destination="@id/nav_player" />
 
+        <action
+            android:id="@+id/action_homeFragment_to_matchFragment"
+            app:destination="@id/nav_match" />
+
     </fragment>
    <fragment
       android:id="@+id/nav_player"
@@ -41,6 +45,17 @@
            android:name="id"
            app:argType="string" />
    </fragment>
+
+    <fragment
+        android:id="@+id/nav_match"
+        android:name="com.deadgame.dota2.module.match.MatchFragment"
+        android:label="@string/menu_match"
+        tools:layout="@layout/fragment_gallery" >
+
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 
 
     <fragment

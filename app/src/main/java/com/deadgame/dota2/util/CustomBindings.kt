@@ -22,12 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.deadgame.dota2.R
-import com.deadgame.dota2.data.CommonData
-import com.deadgame.dota2.data.Hero
-import com.deadgame.dota2.data.MatchDetailInfo
-import com.deadgame.dota2.data.Player
+import com.deadgame.dota2.data.*
 import com.deadgame.dota2.module.hero.HeroesAdapter
 import com.deadgame.dota2.module.history.HistoryAdapter
+import com.deadgame.dota2.module.match.MatchPlayerAdapter
 import com.deadgame.dota2.module.user.PlayersAdapter
 import timber.log.Timber
 import java.util.*
@@ -45,6 +43,11 @@ fun setHistory(listView: RecyclerView, items: List<MatchDetailInfo>) {
     (listView.adapter as HistoryAdapter).submitList(items)
 }
 
+@BindingAdapter("app:match")
+fun setMatch(listView: RecyclerView, items: List<MatchInfo.PlayersDTO>) {
+    (listView.adapter as MatchPlayerAdapter).submitList(items)
+}
+
 @BindingAdapter("app:players")
 fun setPlayers(listView: RecyclerView, items: List<Player>) {
     (listView.adapter as PlayersAdapter).submitList(items)
@@ -59,6 +62,25 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
             .into(view)
     }
 }
+
+@BindingAdapter("imageFromHeroId")
+fun bindImageFromHeroId(view: ImageView, id:Int) {
+    var id= CommonData.getHeroIconUrl(id)
+    Glide.with(view.context)
+            .load(id).placeholder(R.drawable.default_avater)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+}
+
+@BindingAdapter("imageFromItemId")
+fun bindImageFromItemId(view: ImageView, id:Int) {
+    var id= CommonData.getItemIconUrl(id)
+    Glide.with(view.context)
+        .load(id).placeholder(R.drawable.default_avater)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
+}
+
 @BindingAdapter("imageFromUrlWithRandomSize")
 fun imageFromUrlWithRandomSize(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {

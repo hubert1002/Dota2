@@ -1,4 +1,4 @@
-package com.deadgame.dota2.module.history
+package com.deadgame.dota2.module.match
 
 import android.content.Intent
 import android.net.Uri
@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.deadgame.dota2.R
 import com.deadgame.dota2.databinding.DotaHerosFragBinding
 import com.deadgame.dota2.databinding.DotaHistoryFragBinding
-import com.deadgame.dota2.module.home.HomeFragmentDirections
-import com.deadgame.dota2.module.user.UserFragmentDirections
+import com.deadgame.dota2.databinding.DotaMatchFragBinding
+import com.deadgame.dota2.module.user.PlayersAdapter
+import com.deadgame.dota2.module.user.UserFragmentArgs
 import com.deadgame.dota2.util.EventObserver
 import com.deadgame.dota2.util.SGDecoration
 import dagger.android.support.DaggerFragment
@@ -24,20 +24,20 @@ import javax.inject.Inject
 /**
  * Created by liuwei04 on 2021/1/8.
  */
-class HistoryFragment : DaggerFragment(){
+class MatchFragment : DaggerFragment(){
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<HistoryViewModel> { viewModelFactory }
+    private val viewModel by viewModels<MatchViewModel> { viewModelFactory }
 
-    private var initId:String?= null
-    private lateinit var viewDataBinding: DotaHistoryFragBinding
-    private lateinit var listAdapter: HistoryAdapter
+    private lateinit var listAdapter: MatchPlayerAdapter
+//    private var initId:String?= null
+    private lateinit var viewDataBinding: DotaMatchFragBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = DotaHistoryFragBinding.inflate(inflater, container, false).apply {
+        viewDataBinding = DotaMatchFragBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
@@ -51,7 +51,11 @@ class HistoryFragment : DaggerFragment(){
         setupListAdapter()
         setupNavigation()
 
-        viewModel.getHistoryList(initId)
+        requireArguments().apply {
+            var id = UserFragmentArgs.fromBundle(requireArguments()).id
+            Timber.i("id$id")
+            viewModel.getMatchInfo(id)
+        }
 
     }
 
@@ -61,7 +65,7 @@ class HistoryFragment : DaggerFragment(){
 //            viewDataBinding.tasksList.layoutManager= StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 //            viewDataBinding.tasksList.addItemDecoration(SGDecoration(requireContext().resources.getDimensionPixelOffset(
 //                R.dimen.hero_dec)))
-            listAdapter = HistoryAdapter(viewModel)
+            listAdapter = MatchPlayerAdapter(viewModel)
             viewDataBinding.tasksList.adapter = listAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
@@ -71,9 +75,6 @@ class HistoryFragment : DaggerFragment(){
     private fun setupNavigation() {
         viewModel.openTaskEvent.observe(this.viewLifecycleOwner, EventObserver {
             Timber.i("onitemclick"+it)
-
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToMatchFragment(it.match_id.toString()))
-
 
         })
     }
