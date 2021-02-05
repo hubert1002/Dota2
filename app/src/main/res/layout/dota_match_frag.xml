@@ -73,7 +73,13 @@
                     android:text="no contet" />
             </LinearLayout>
         </RelativeLayout>
-
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:visibility="@{viewmodel.dataLoading?View.VISIBLE:View.GONE}"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            style="@style/Base.Widget.AppCompat.ProgressBar"
+            />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
