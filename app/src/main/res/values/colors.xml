@@ -21,4 +21,8 @@
     <color name="material_green">#ff4CAF50</color>
     <color name="material_red">#ffF44336</color>
     <color name="material_yellow">#ffFFEB3B</color>
+
+
+    <color name="colorLine">#dfdfdf</color>
+    <color name="shimmer_color_for_image">#55efefef</color>
 </resources>

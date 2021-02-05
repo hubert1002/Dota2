@@ -30,17 +30,24 @@ class MatchViewModel @Inject constructor(
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private val _loadFail = MutableLiveData<Boolean>()
+    val loadFail: LiveData<Boolean> = _loadFail
+
+
     fun getMatchInfo(id:String){
         _dataLoading.value = true
+        _loadFail.value = false;
         viewModelScope.launch {
             Timber.i("loadHeroes$repository")
             val result = repository.getMatchInfo(id)
             if (result is Result.Success) {
                 _matchInfo.value = result.data
                 _players.value = result.data.players
+                _loadFail.value = false
             } else {
                 _matchInfo.value = null
                 _players.value = emptyList()
+                _loadFail.value = true
             }
             _dataLoading.value = false
         }

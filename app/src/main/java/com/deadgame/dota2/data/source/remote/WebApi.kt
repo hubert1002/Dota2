@@ -67,9 +67,9 @@ object WebApi {
             }
         }
         apiService.getUsers(KEY,sb.toString())?.apply {
-            var res =  execute()
-            Timber.i("getUsers"+res)
-            return res.body()
+            return runCatching {
+                execute()
+            }.getOrNull()?.body()
         }
         return null
     }
@@ -77,27 +77,27 @@ object WebApi {
 
     fun getFriends(id:String): NetResult<FriendInfo>? {
         apiService.getFriends(KEY,id,RELATION)?.apply {
-            var res =  execute()
-            Timber.i("getUsers"+res)
-            return res.body()
+            return runCatching {
+                execute()
+            }.getOrNull()?.body()
         }
         return null
     }
 
     fun getMatchesHistory(id:String,num:String): NetResult<MatchBriefInfo>? {
         apiService.getMatchesHistory(KEY, id, num)?.apply {
-            var res =  execute()
-            Timber.i("getMatchesHistory"+res)
-            return res.body()
+            return runCatching {
+                execute()
+            }.getOrNull()?.body()
         }
         return null
     }
 
     fun getMatchDetails(id: String) : NetResult2<MatchDetailInfo>? {
         apiService.getMatchDetails(KEY, id)?.apply {
-            var res = execute()
-            Timber.i("getMatchDetails"+res)
-            return res.body()
+            return runCatching {
+                execute()
+            }.getOrNull()?.body()
         }
         return null;
     }

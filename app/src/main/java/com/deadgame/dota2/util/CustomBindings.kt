@@ -27,6 +27,7 @@ import com.deadgame.dota2.module.hero.HeroesAdapter
 import com.deadgame.dota2.module.history.HistoryAdapter
 import com.deadgame.dota2.module.match.MatchPlayerAdapter
 import com.deadgame.dota2.module.user.PlayersAdapter
+import com.ethanhua.skeleton.SkeletonAdapter
 import timber.log.Timber
 import java.util.*
 
@@ -45,6 +46,7 @@ fun setHistory(listView: RecyclerView, items: List<MatchDetailInfo>) {
 
 @BindingAdapter("app:match")
 fun setMatch(listView: RecyclerView, items: List<MatchInfo.PlayersDTO>) {
+    if(listView.adapter is MatchPlayerAdapter)
     (listView.adapter as MatchPlayerAdapter).submitList(items)
 }
 

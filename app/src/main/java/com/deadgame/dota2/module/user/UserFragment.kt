@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.NavHostController
@@ -20,14 +21,18 @@ import javax.inject.Inject
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.deadgame.dota2.R
+import com.deadgame.dota2.base.BaseDaggerFragment
 import com.deadgame.dota2.module.home.HomeFragmentDirections
+import com.ethanhua.skeleton.Skeleton
+import com.ethanhua.skeleton.SkeletonScreen
+import com.ethanhua.skeleton.ViewSkeletonScreen
 
 //import com.deadgame.dota2.module.home.HomeFragmentDirections
 
 /**
  * Created by liuwei04 on 2021/1/22.
  */
-class UserFragment : DaggerFragment(){
+class UserFragment : BaseDaggerFragment(){
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -38,6 +43,8 @@ class UserFragment : DaggerFragment(){
     private lateinit var listAdapter: PlayersAdapter
 
     private var initId:String?= null
+
+    private var viewSkeletonScreen : ViewSkeletonScreen? =null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -57,11 +64,13 @@ class UserFragment : DaggerFragment(){
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
         setupNavigation()
+        setupLoading()
         arguments?.apply {
             initId = UserFragmentArgs.fromBundle(requireArguments()).id
         }
         Timber.i("id$id")
         viewModel.loadUser(initId)
+
     }
 
     private fun setupListAdapter() {
@@ -86,6 +95,17 @@ class UserFragment : DaggerFragment(){
                 findNavController().navigate( UserFragmentDirections.actionUserFragmentToUserFragment(it))
             }
 
+        })
+    }
+    private fun  setupLoading(){
+        viewSkeletonScreen = Skeleton.bind(viewDataBinding.rootview).load(R.layout.skeleton_image_new).shimmer(false).show()
+        viewModel.dataLoading.observe(this.viewLifecycleOwner, Observer {
+            Timber.i("setupLoading"+it)
+            if(!it){
+                viewSkeletonScreen!!.hide()
+            }else{
+                viewSkeletonScreen!!.show()
+            }
         })
     }
 

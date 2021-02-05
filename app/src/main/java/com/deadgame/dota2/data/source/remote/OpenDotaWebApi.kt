@@ -45,9 +45,9 @@ object OpenDotaWebApi {
 
     fun getMatchInfo(id: String) : MatchInfo? {
         apiService.getMatchInfo(id)?.apply {
-            var res = execute()
-            Timber.i("getMatchDetails"+res)
-            return res.body()
+            return runCatching {
+                execute()
+            }.getOrNull()?.body()
         }
         return null;
     }

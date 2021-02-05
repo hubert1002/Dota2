@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.deadgame.dota2.R
+import com.deadgame.dota2.base.BaseDaggerFragment
 import com.deadgame.dota2.databinding.DotaHerosFragBinding
 import com.deadgame.dota2.util.EventObserver
 import com.deadgame.dota2.util.SGDecoration
@@ -20,7 +21,7 @@ import javax.inject.Inject
 /**
  * Created by liuwei04 on 2021/1/8.
  */
-class HeroesFragment : DaggerFragment(){
+class HeroesFragment  : BaseDaggerFragment(){
 
 
     @Inject

@@ -7,16 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.deadgame.dota2.R
+import com.deadgame.dota2.base.BaseDaggerFragment
 import com.deadgame.dota2.databinding.DotaHerosFragBinding
 import com.deadgame.dota2.databinding.DotaHistoryFragBinding
 import com.deadgame.dota2.module.home.HomeFragmentDirections
 import com.deadgame.dota2.module.user.UserFragmentDirections
 import com.deadgame.dota2.util.EventObserver
 import com.deadgame.dota2.util.SGDecoration
+import com.ethanhua.skeleton.Skeleton
+import com.ethanhua.skeleton.ViewSkeletonScreen
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,7 +29,7 @@ import javax.inject.Inject
 /**
  * Created by liuwei04 on 2021/1/8.
  */
-class HistoryFragment : DaggerFragment(){
+class HistoryFragment  : BaseDaggerFragment(){
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -33,6 +38,8 @@ class HistoryFragment : DaggerFragment(){
     private var initId:String?= null
     private lateinit var viewDataBinding: DotaHistoryFragBinding
     private lateinit var listAdapter: HistoryAdapter
+    private var viewSkeletonScreen : ViewSkeletonScreen? =null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +57,8 @@ class HistoryFragment : DaggerFragment(){
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
         setupNavigation()
-
+        setupLoading()
+        if(viewModel.items.value.isNullOrEmpty())
         viewModel.getHistoryList(initId)
 
     }
@@ -77,4 +85,21 @@ class HistoryFragment : DaggerFragment(){
 
         })
     }
+    private fun  setupLoading(){
+        viewSkeletonScreen= Skeleton.bind(viewDataBinding.tasksContainer)
+            .load(R.layout.skeleton_image_new)
+            .color(R.color.shimmer_color_for_image)
+            .angle(20)
+            .show()
+
+        viewModel.dataLoading.observe(this.viewLifecycleOwner, Observer {
+            Timber.i("setupLoading"+it)
+            if(!it){
+                viewSkeletonScreen!!.hide()
+            }else{
+                viewSkeletonScreen!!.show()
+            }
+        })
+    }
+
 }

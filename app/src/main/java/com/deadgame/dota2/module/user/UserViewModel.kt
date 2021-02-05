@@ -73,7 +73,7 @@ class UserViewModel @Inject constructor(
                 val data = result.data
                 _friends.value= data
             } else {
-                _friends.value= null
+                _friends.value= emptyList()
             }
             _dataLoading.value = false
         }
