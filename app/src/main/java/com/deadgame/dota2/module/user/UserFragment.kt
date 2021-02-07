@@ -98,7 +98,7 @@ class UserFragment : BaseDaggerFragment(){
         })
     }
     private fun  setupLoading(){
-        viewSkeletonScreen = Skeleton.bind(viewDataBinding.rootview).load(R.layout.skeleton_image_new).shimmer(false).show()
+        viewSkeletonScreen = Skeleton.bind(viewDataBinding.rootview).load(R.layout.skeleton_user_loading).shimmer(true).show()
         viewModel.dataLoading.observe(this.viewLifecycleOwner, Observer {
             Timber.i("setupLoading"+it)
             if(!it){
