@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="playerDto"
+            type="com.deadgame.dota2.data.MatchInfo.PlayersDTO" />
+        <variable
+            name="viewmodel"
+            type="com.deadgame.dota2.module.match.MatchViewModel" />
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:foreground="?android:selectableItemBackground"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="2dp"
+        android:background="@color/colorWhite"
+        android:onClick="@{() -> viewmodel.open(String.valueOf(playerDto.account_id))}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+            
+            <ImageView
+                android:id="@+id/heroIcon"
+                app:imageFromHeroId="@{playerDto.hero_id}"
+                android:src="@drawable/default_avater"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:scaleType="centerCrop"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="@{String.valueOf(playerDto.level)}"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/heroIcon"
+                app:layout_constraintRight_toRightOf="@+id/heroIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/name"
+                android:text="@{playerDto.personaname}"
+                android:textColor="@{playerDto.isRadiant?@color/material_green:@color/material_red}"
+                app:layout_constraintLeft_toRightOf="@+id/heroIcon"
+                app:layout_constraintRight_toLeftOf="@+id/items"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:text="@{playerDto.fightRate}"
+                android:textColor="@color/colorGray"
+                app:layout_constraintLeft_toRightOf="@+id/heroIcon"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:text="@{String.valueOf(playerDto.kills)+'/'+String.valueOf(playerDto.deaths)+'/'+String.valueOf(playerDto.assists)}"
+                android:textColor="@color/colorGray"
+                app:layout_constraintRight_toLeftOf="@+id/items"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"/>
+
+
+            <TextView
+                android:text="@{ String.valueOf(playerDto.hero_damage)}"
+                android:textColor="@color/colorGray"
+                app:layout_constraintLeft_toRightOf="@+id/heroIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:text="@{ playerDto.kdaForShow}"
+                android:textColor="@color/colorGray"
+                app:layout_constraintRight_toLeftOf="@+id/items"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="14sp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/items"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <ImageView
+                    android:id="@+id/item1"
+                    app:layout_constraintRight_toLeftOf="@+id/item2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    app:imageFromItemId="@{playerDto.item_0}"
+                    android:layout_height="32dp"/>
+                <ImageView
+                    android:id="@+id/item2"
+                    app:layout_constraintRight_toLeftOf="@+id/item3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    android:layout_height="32dp"
+                    app:imageFromItemId="@{playerDto.item_1}"/>
+                <ImageView
+                    android:id="@+id/item3"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    android:layout_height="32dp"
+                    app:imageFromItemId="@{playerDto.item_2}"/>
+
+                <ImageView
+                    android:id="@+id/item4"
+                    app:layout_constraintRight_toLeftOf="@+id/item2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    app:imageFromItemId="@{playerDto.item_3}"
+                    android:layout_height="32dp"/>
+                <ImageView
+                    android:id="@+id/item5"
+                    app:layout_constraintRight_toLeftOf="@+id/item3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    app:imageFromItemId="@{playerDto.item_4}"
+                    android:layout_height="32dp"/>
+                <ImageView
+                    android:id="@+id/item6"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/default_avater"
+                    app:imageFromItemId="@{playerDto.item_5}"
+                    android:layout_height="32dp"/>
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

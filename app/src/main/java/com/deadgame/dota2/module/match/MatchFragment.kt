@@ -55,6 +55,7 @@ class MatchFragment : BaseDaggerFragment(){
         setupListAdapter()
         setupNavigation()
         setupLoading()
+//        setupExpandableListView()
 
         requireArguments().apply {
             var id = UserFragmentArgs.fromBundle(requireArguments()).id
@@ -73,6 +74,18 @@ class MatchFragment : BaseDaggerFragment(){
 //            Timber.w("ViewModel not initialized when attempting to set up adapter.")
 //        }
     }
+
+//    private fun setupExpandableListView(){
+//        viewDataBinding.expandablelistview.setGroupIndicator(null)
+//        var adapter = MatchPlayerExpandableAdapter(viewModel!!,
+//            emptyList(),requireContext())
+//        viewDataBinding.expandablelistview.setAdapter(adapter)
+//
+//        viewModel.players.observe(this.viewLifecycleOwner, Observer {
+//            adapter.updateList(it)
+//        })
+//
+//    }
 
     private fun setupNavigation() {
         viewModel.openTaskEvent.observe(this.viewLifecycleOwner, EventObserver {

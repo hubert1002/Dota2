@@ -6,7 +6,12 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -15,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import timber.log.Timber
+
 
 /**
  * Created by liuwei04 on 2021/1/18.
@@ -51,6 +57,49 @@ object WebApi {
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(observer!!)
+    }
+
+
+    fun test(){
+        val client = OkHttpClient().newBuilder()
+            .build()
+        val mediaType =
+            "multipart/form-data; boundary=----WebKitFormBoundaryUcuj6QzA25Stpgst".toMediaTypeOrNull()
+        val body: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart("appId", "ZX0001")
+            .addFormDataPart("startTime", "2021-02-16")
+            .addFormDataPart("endTime", "2021-02-23")
+            .addFormDataPart("byDhid", "true")
+            .addFormDataPart("statDim", "byDay")
+            .addFormDataPart("filterResolveSheet", "0")
+            .build()
+        val request: Request = Request.Builder()
+            .url("http://cr-admin.51y5.net/kepler-dashboard//bugly/api/crash/trenddata")
+            .method("POST", body)
+            .addHeader("X-BUGLY-ANR", "false")
+            .addHeader(
+                "Cookie",
+                "JSESSIONID=1E563044F7D8CA017575DE1A7C5F7379; OUTFOX_SEARCH_USER_ID_NCOO=419280410.70044017; bugly.project.code=ZX0001; JSESSIONID=FA79555020057140ED7D5AF2A2F797AF"
+            )
+            .addHeader("X-BUGLY-APPID", "ZX0001")
+            .addHeader(
+                "User-Agent",
+                "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Mobile Safari/537.36"
+            )
+            .addHeader("Referer", "http://cr-admin.51y5.net/kepler-dashboard/bugly/index")
+            .addHeader("Proxy-Connection", "keep-alive")
+            .addHeader("Origin", "http://cr-admin.51y5.net")
+            .addHeader("Host", "cr-admin.51y5.net")
+            .addHeader(
+                "Content-Type",
+                "multipart/form-data; boundary=----WebKitFormBoundaryUcuj6QzA25Stpgst"
+            )
+            .addHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+            .addHeader("Accept-Encoding", "gzip, deflate")
+            .addHeader("Accept", "application/json, text/plain, */*")
+            .build()
+        val response = client.newCall(request).execute()
+        Timber.i("test"+response)
     }
 
     fun getItemsSync():NetResult<Item>?{
